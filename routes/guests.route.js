@@ -14,7 +14,7 @@ router.get('/', checkAuth, (req, resp) => {
     })
     .catch(err => {
       return resp
-        .status(401)
+        .status(500)
         .json({msg: 'An error occured,please try again !', error: err.msg});
     });
 });
@@ -57,7 +57,7 @@ router.post(
       })
       .catch(err => {
         return resp
-          .status(401)
+          .status(500)
           .json({msg: 'An error occured,please try again !', error: err.msg});
       });
   }
@@ -80,7 +80,7 @@ router.delete('/:id', checkAuth, (req, resp) => {
     })
     .catch(err => {
       return resp
-        .status(401)
+        .status(500)
         .json({msg: 'An error occured,please try again !', error: err.msg});
     });
 });
@@ -105,7 +105,7 @@ router.put('/:id', checkAuth, (req, resp) => {
     })
     .catch(err => {
       return resp
-        .status(401)
+        .status(500)
         .json({msg: 'An error occured,please try again !', error: err.msg});
     });
 });
