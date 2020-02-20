@@ -61,7 +61,7 @@ router.post (
   }
 );
 
-/* POST user credentials to sign in */
+/* POST user credentials to s ign in */
 router.post (
   '/login',
   [
