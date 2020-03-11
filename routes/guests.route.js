@@ -4,10 +4,12 @@ const Guest = require('../models/Guest.model');
 const {check, validationResult} = require('express-validator');
 
 /*
-GET all Guests
-*/
+ * GET all Guests
+ */
 
 router.get('/', checkAuth, (req, resp) => {
+  console.log(req);
+
   Guest.find({user_id: req.userData.id})
     .then(guests => {
       return resp.status(200).json({guests: guests});
@@ -15,14 +17,13 @@ router.get('/', checkAuth, (req, resp) => {
     .catch(err => {
       return resp
         .status(500)
-        .json({msg: 'An error occured,please try again !', error: err.msg});
+        .json({msg: 'An error occured,please try again or refresh the page !'});
     });
 });
 
 /*
-POST a new Guest
-*/
-
+ * POST a new Guest
+ */
 router.post(
   '/',
   checkAuth,
@@ -35,6 +36,8 @@ router.post(
       .isEmpty(),
   ],
   (req, resp) => {
+    console.log(req);
+
     const errors = validationResult(req);
     const {name, phone, dietary, isConfirmed} = req.body;
 
@@ -51,22 +54,25 @@ router.post(
     guest
       .save()
       .then(guest => {
-        return resp
-          .status(200)
-          .json({msg: 'You have successfully add a new guest !', guest: guest});
+        console.log(guest);
+        return resp.status(200).json({
+          msg: 'You have successfully add a new guest !',
+          guest: guest,
+        });
       })
       .catch(err => {
         return resp
           .status(500)
-          .json({msg: 'An error occured,please try again !', error: err.msg});
+          .json({msg: 'An error occured,please try again !'});
       });
   }
 );
 
 /*
-DELETE one Guest by id
-*/
+ * DELETE one Guest by id
+ */
 router.delete('/:id', checkAuth, (req, resp) => {
+  console.log(req.params.id);
   Guest.findById({_id: req.params.id})
     .then(guest => {
       if (!guest) {
@@ -86,8 +92,8 @@ router.delete('/:id', checkAuth, (req, resp) => {
 });
 
 /*
-UPDATE one Guest by id
-*/
+ * UPDATE one Guest by id
+ */
 router.put('/:id', checkAuth, (req, resp) => {
   const {name, phone, dietary, isConfirmed} = req.body;
   const updatedGuest = {name, phone, dietary, isConfirmed};
